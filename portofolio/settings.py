@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-aw8h^z1ul6jl^mka^l4cm5=_7u&#ta%cphyp0_w0+8vcxx9ody
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "damica.adreeza-myportofolio.pws.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "damica-adreeza-myportofolio.pws.cs.ui.ac.id"]
 
 
 # Application definition
