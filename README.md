@@ -6,7 +6,7 @@ Kelas: PBP B
 
 ### Tugas 1
 
-1. Ya, saya menggunakan elemen semantik seperti <section> dan <article>. Pada website saya, <section> digunakan untuk membagi bagian utama website, seperti bagian Profile dan Currently Learning. Kemudian, <article> digunakan untuk setiap topik yang sedang saya pelajari pada bagian Currently Learning. Penggunaan elemen tersebut membuat struktur HTML saya lebih terorganisir dan lebih mudah dibaca karena setiap bagian memiliki fungsi yang jelas. Hal ini juga memudahkan saya ketika mengatur styling CSS untuk masing-masing bagian.
+1. Ya, saya menggunakan elemen semantik seperti `<section>` dan `<article>`. Pada website saya, `<section>` digunakan untuk membagi bagian utama website, seperti bagian Profile dan Currently Learning. Kemudian, `<article>` digunakan untuk setiap topik yang sedang saya pelajari pada bagian Currently Learning. Penggunaan elemen tersebut membuat struktur HTML saya lebih terorganisir dan lebih mudah dibaca karena setiap bagian memiliki fungsi yang jelas. Hal ini juga memudahkan saya ketika mengatur styling CSS untuk masing-masing bagian.
 
 2. Tantangan responsive yang saya temukan adalah menyesuaikan layout desktop agar tetap nyaman dilihat di mobile. Pada desktop, beberapa elemen bisa diletakkan berdampingan, tetapi pada mobile lebih baik disusun menjadi satu kolom. Saya menggunakan media query untuk mengubah layout, ukuran gambar, dan spacing berdasarkan ukuran layar.
 
