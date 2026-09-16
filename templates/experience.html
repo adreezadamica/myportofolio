@@ -23,7 +23,7 @@
     <main>
         <section class="experience-section" id="experience">
             <div class="container">
-                <p class="section-kicker">Perjalanan saya sejauh ini</p>
+                <p class="section-kicker">My Journey so Far</p>
                 <h1>Experience</h1>
 
                 <div class="experience-grid">
@@ -38,9 +38,9 @@
                             </p>
 
                             {% if experience.is_ongoing %}
-                                <p class="experience-status">Sedang berlangsung</p>
+                                <p class="experience-status-ongoing">Ongoing</p>
                             {% else %}
-                                <p class="experience-status">Selesai</p>
+                                <p class="experience-status-done">Done</p>
                             {% endif %}
                         </article>
                     {% empty %}

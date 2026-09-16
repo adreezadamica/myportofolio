@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main'
+    'main',
+    'django_extensions' # mendownload IPython untuk mendukung multiline editing di terminal, berguna saat menambahkan data ke model
 ]
 
 MIDDLEWARE = [

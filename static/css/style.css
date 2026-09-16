@@ -350,8 +350,18 @@ h1, .brand {
     color: var(--text-muted);
 }
 
-.experience-status {
+.experience-status-ongoing {
+    color: #059669;
     margin-top: 1rem;
     font-size: 0.85rem;
     font-weight: 600;
+    font-style: italic;
+}
+
+.experience-status-done {
+    color: red;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-style: bold;
 }
