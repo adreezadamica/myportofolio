@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'django_extensions' # mendownload IPython untuk mendukung multiline editing di terminal, berguna saat menambahkan data ke model
 ]
 
 MIDDLEWARE = [
@@ -104,6 +103,7 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    INSTALLED_APPS += ["django_extensions"] # mendownload IPython untuk mendukung multiline editing di terminal, berguna saat menambahkan data ke model
 
 
 # Password validation
