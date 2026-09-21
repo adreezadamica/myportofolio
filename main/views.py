@@ -3,8 +3,8 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from main.models import Experience
-from main.forms import ExperienceForm
+from main.models import Experience, Projects
+from main.forms import ExperienceForm, ProjectsForm
 
 
 def show_main(request):
@@ -73,3 +73,59 @@ def delete_experience(request, experience_id):
         return redirect("main:show_experience")
 
     return redirect("main:show_experience")
+
+### PROJECT
+
+def show_projects(request):
+    json_response = get_projects_json(request)
+
+    deserialized_data = serializers.deserialize(
+        "json",
+        json_response.content.decode("utf-8"),
+    )
+
+    projects = [item.object for item in deserialized_data]
+    title_query = request.GET.get("title", "").strip()
+
+    context = {
+        "name": "Damica",
+        "project_list": projects,
+        "title_query": title_query,
+    }
+
+    return render(request, "projects.html", context)
+
+def create_project(request):
+    form = ProjectsForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Proyek baru berhasil ditambahkan!")
+        return redirect("main:show_projects")
+
+    context = {
+        "name": "Damica",
+        "form": form,
+    }
+
+    return render(request, "project_form.html", context)
+
+def get_projects_json(request):
+    title_query = request.GET.get("title", "").strip()
+    projects = Projects.objects.all()
+
+    if title_query:
+        projects = projects.filter(title__icontains=title_query)
+
+    projects_json = serializers.serialize("json", projects)
+    return HttpResponse(projects_json, content_type="application/json")
+
+def delete_project(request, project_id):
+    project = get_object_or_404(Projects, pk=project_id)
+
+    if request.method == "POST":
+        project.delete()
+        messages.success(request, "Proyek berhasil dihapus!")
+        return redirect("main:show_projects")
+
+    return redirect("main:show_projects")

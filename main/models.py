@@ -25,3 +25,30 @@ class Experience(models.Model):
     @property
     def is_ongoing(self):
         return self.ended_at is None
+
+class Projects(models.Model):
+    PROJECT_CHOICES = [
+        ('web', 'Web Application'),
+        ('mobile', 'Mobile Application'),
+        ('ai-ml', 'AI / Machine Learning'),
+        ('robotics', 'Robotics / IoT'),
+        ('desktop', 'Desktop App'),
+        ('cli-script', 'CLI / Automation Script'),
+        ('game', 'Game Development'),
+        ('other', 'Other'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    category = models.CharField(max_length=20, choices=PROJECT_CHOICES, default='web')
+    thumbnail = models.URLField(blank=True, null=True)
+    started_at = models.DateTimeField(auto_now_add=True)
+    ended_at = models.DateTimeField(blank=True, null=True)
+    
+    def __str__(self):
+        return self.title
+    
+    @property
+    def is_ongoing(self):
+        return self.ended_at is None
