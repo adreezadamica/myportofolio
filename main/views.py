@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib import messages
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
 from main.models import Experience, Projects
@@ -107,6 +107,7 @@ def show_projects(request):
         "name": "Damica",
         "project_list": projects,
         "title_query": title_query,
+        "is_editor": is_editor(request.user),
     }
 
     return render(request, "projects.html", context)
@@ -114,7 +115,7 @@ def show_projects(request):
 @login_required(login_url="/login/")
 def create_project(request):
     if not request.user.is_superuser:
-        raise PermissionDenied
+        return HttpResponseForbidden("403 Forbidden: Hanya Pemilik Portofolio yang dapat membuat proyek.")
     
     form = ProjectsForm(request.POST or None)
 
@@ -142,7 +143,11 @@ def get_projects_json(request):
     )
     return HttpResponse(projects_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_project(request, project_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("403 Forbidden: Hanya Pemilik Portofolio yang dapat menghapus proyek.")
+    
     project = get_object_or_404(Projects, pk=project_id)
 
     if request.method == "POST":
@@ -199,3 +204,23 @@ def toggle_star(request, project_id):
             project.starred_by.add(request.user)
 
     return redirect("main:show_projects")
+
+def is_editor(user):
+    return user.is_authenticated and (
+        user.is_superuser or user.groups.filter(name='Editor').exists()
+    )
+
+@login_required(login_url='/login/')
+def edit_project(request, project_id):
+    if not is_editor(request.user):
+        return HttpResponseForbidden("403 Forbidden: Anda tidak memiliki hak akses Editor.")
+
+    project = get_object_or_404(Projects, pk=project_id)
+    form = ProjectsForm(request.POST or None, instance=project)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("main:show_projects")
+
+    context = {'form': form, 'project': project}
+    return render(request, "edit_project.html", context)

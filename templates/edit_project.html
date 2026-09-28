@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Edit Proyek - {{ project.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/edit_project.css' %}">
+{% endblock meta %}
+
+{% block content %}
+<main class="container edit-project-container">
+    <h1 class="edit-project-title">Edit Proyek</h1>
+
+    <form method="POST" class="edit-project-form">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="form-error">{{ field.errors.0 }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="button">Simpan Perubahan</button>
+            <a href="{% url 'main:show_projects' %}" class="button button-cancel">Batal</a>
+        </div>
+    </form>
+</main>
+{% endblock content %}
