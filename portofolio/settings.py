@@ -155,4 +155,7 @@ MAILERS = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ["https://damica-adreeza-myportofolio.pws.cs.ui.ac.id/"]
+CSRF_TRUSTED_ORIGINS = ["https://damica-adreeza-myportofolio.pws.cs.ui.ac.id"]
+
+# Memberitahu Django bahwa request datang via HTTPS dari reverse proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
