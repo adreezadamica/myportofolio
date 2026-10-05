@@ -24,13 +24,13 @@
                         </button>
                     {% endif %} 
                 </div>
-                <form id="project-search-form" class="project-search">
+                <form id="project-search-form" class="experience-search">
                     <input type="search"
                            id="search-input"
                            name="title"
                            value="{{ title_query }}"
                            placeholder="Cari berdasarkan nama proyek"
-                           class="project-search__input"
+                           class="experience-search__input"
                            aria-label="Cari berdasarkan nama proyek">
                     <button type="submit" class="button">Cari</button>
                 </form>
@@ -132,8 +132,8 @@
                 <h2>${escapeHtml(project.title)}</h2>
                 <span class="experience-category">${escapeHtml(project.category)}</span>
                 <p class="experience-description">${escapeHtml(project.description)}</p>
-                <div class="project-card-actions">
-                    <div class="project-actions">
+                <div class="experience-card-actions">
+                    <div class="experience-actions">
                         
                         <form method="post" action="${starUrl}" class="star-form">
                             {% csrf_token %}

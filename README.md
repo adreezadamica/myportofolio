@@ -4,31 +4,22 @@ NPM: 2506625193
 
 Kelas: PBP B
 
-### Tugas 1
+### Tugas 5
 
-1. Ya, saya menggunakan elemen semantik seperti `<section>` dan `<article>`. Pada website saya, `<section>` digunakan untuk membagi bagian utama website, seperti bagian Profile dan Currently Learning. Kemudian, `<article>` digunakan untuk setiap topik yang sedang saya pelajari pada bagian Currently Learning. Penggunaan elemen tersebut membuat struktur HTML saya lebih terorganisir dan lebih mudah dibaca karena setiap bagian memiliki fungsi yang jelas. Hal ini juga memudahkan saya ketika mengatur styling CSS untuk masing-masing bagian.
+1. Debouncing adalah teknik menunda eksekusi suatu fungsi sampai user berhenti melakukan aksi selama waktu tertentu. Di halaman Experience, kolom cari memakai setTimeout 300 ms, dan timer di-reset (clearTimeout) setiap kali user mengetik lagi. Request baru dikirim hanya kalau user berhenti mengetik selama 300 ms.
 
-2. Tantangan responsive yang saya temukan adalah menyesuaikan layout desktop agar tetap nyaman dilihat di mobile. Pada desktop, beberapa elemen bisa diletakkan berdampingan, tetapi pada mobile lebih baik disusun menjadi satu kolom. Saya menggunakan media query untuk mengubah layout, ukuran gambar, dan spacing berdasarkan ukuran layar.
+Ini penting karena tanpa debouncing, mengetik "backend" (7 huruf) bisa mengirim 7 request. Akibatnya server terbebani, jaringan terpakai sia-sia, dan hasil request lama bisa tiba setelah yang baru sehingga tampilan salah. Dengan debouncing, request jauh lebih sedikit.
 
-3. Tiap perubahan informasi masih harus dilakukan secara manual melalui kode HTML. Untuk pengembangan selanjutnya, saya ingin membuat bagian Projects menjadi dinamis, misal dengan menyimpan data project di database dan menampilkannya secara otomatis di website.
+2. fetch() mengembalikan sebuah Promise, bukan data langsung, karena permintaan ke server perlu waktu. await memberi jeda eksekusi fungsi async sampai Promise selesai, lalu memberi hasilnya (objek Response) tanpa memblokir halaman. Contohnya di fetchExperiences: const response = await fetch(url) dan const data = await response.json().
 
-AI Disclosure: Dalam pengerjaan tugas ini, saya menggunakan ChatGPT sebagai alat bantu untuk memahami penggunaan HTML dan CSS, mencari alternatif struktur website, serta mendapatkan masukan mengenai responsive design. Beberapa saran dari ChatGPT saya gunakan sebagai referensi, kemudian saya sesuaikan kembali dengan kebutuhan dan desain website yang saya buat.
+Kalau tidak pakai await, variabel response hanya berisi Promise yang belum selesai. Kode selanjutnya langsung jalan, jadi response.ok atau response.json() bekerja pada objek yang belum siap. Hasilnya daftar tidak tampil atau muncul error, dan try/catch tidak menangkap error dari request itu.
 
-### Tugas 3
+3. XSS adalah salah satu jenis serangan ketika seseorang menyisipkan skrip berbahaya, misalnya `<script>...</script>`, melalui input yang kemudian ditampilkan kepada user lain. Jika input tersebut tidak ditangani dengan baik, skrip bisa dijalankan di browser korban. Dampaknya bisa berupa pencurian cookie sesi, perubahan tampilan halaman, atau bahkan menjalankan aksi tertentu menggunakan akun korban.
 
-1. - Mengapa pakai ModelForm? Kalau membuat form HTML manual, kita harus mengetik tag input satu per satu, mencocokkan tipe data secara manual, membuat validasi sendiri, sampai menulis kode query untuk simpan ke database. ModelForm jauh lebih praktis karena langsung terhubung dengan model database yang sudah kita buat. ModelForm otomatis membuatkan input field, aturan validasi, dan label yang sesuai. Kita juga bisa langsung menyimpan data yang diisi pengguna ke database cukup dengan memanggil form.save(). Cara ini menghemat waktu dan mengurangi risiko salah ketik atau celah keamanan.
-- Mengapa wajib ada csrf_token? Tag ini berguna untuk mencegah serangan keamanan yang bernama Cross-Site Request Forgery (CSRF). Serangan ini terjadi saat ada situs luar atau pihak jahat yang mencoba mengirimkan data formulir palsu atas nama kita yang sedang login. Dengan menyertakan csrf_token, Django akan memberikan token rahasia di dalam form untuk memastikan bahwa data yang dikirim memang benar-benar berasal dari halaman website kita sendiri, bukan dari website lain.
+Pada template Django, variabel yang ditulis menggunakan {{ variabel }} secara default sudah melalui proses auto-escape. Misalnya, karakter < akan diubah menjadi &lt;, sehingga kode HTML yang dimasukkan oleh user hanya ditampilkan sebagai teks dan tidak dijalankan oleh browser.
 
-2. Mengapa JSON lebih disukai dibandingkan XML pada aplikasi web modern:
-   - Ukuran data lebih ringkas
-   - Sangat cocok dengan JavaScript
-   - Lebih mudah dibaca
+Namun, pada JavaScript saya menggunakan innerHTML untuk membuat HTML secara dinamis menggunakan template string. Berbeda dengan template Django, innerHTML tidak melakukan escape secara otomatis. Oleh karena itu, jika data dari server langsung dimasukkan ke dalam innerHTML, data tersebut berpotensi mengandung HTML atau script berbahaya yang kemudian dijalankan oleh browser.
 
-3. Alur view mengembalikan JSON dan alasan perlunya serialization:
-     a. Browser atau pengguna membuka URL endpoint data (misalnya /api/projects).
-     b. Django memeriksa berkas urls.py lalu memanggil fungsi view yang sesuai (misalnya get_projects_json).
-     c. Di dalam view, Django mengambil data dari database lewat model menggunakan perintah seperti Projects.objects.all().
-     d. Kumpulan data dari database tersebut kemudian diubah menjadi teks berformat JSON lewat proses serializers.serialize().
-     e. View mengembalikan teks JSON tersebut ke browser menggunakan HttpResponse dengan format application/json.
+Untuk mengatasinya, saya menggunakan fungsi escapeHtml di sisi JavaScript sebelum memasukkan data ke dalam HTML. Selain itu, pada sisi server saya juga menggunakan strip_tags di clean_`<field>` pada ModelForm. Dengan begitu, terdapat perlindungan dari dua sisi: data dibersihkan di server dan juga di-escape sebelum digunakan untuk membuat HTML di browser.
 
-   - Perlu serialization karena data yang diambil langsung dari database Django berbentuk objek Python yang ada di memori program. Objek Python ini tidak bisa langsung dikirim begitu saja lewat internet dan tidak bisa dipahami oleh browser atau aplikasi lain. Serialization dibutuhkan untuk menerjemahkan objek Python tersebut menjadi format teks standar (seperti JSON) supaya bisa dikirim lewat jaringan dan dibaca dengan mudah oleh browser, JavaScript, atau aplikasi HP.
+# AI Disclosure: Saya menggunakan Claude Sonnet 5.5 sebagai alat bantu dalam mengerjakan tugas ini, terutama untuk memandu penerapan pola Tutorial 5 ke halaman Experience. Saya menerapkan, menjalankan dan menguji hasilnya pada semua peran (pengunjung, user biasa, dan superuser), menghubungkannya ke proyek saya, serta memutuskan sendiri pilihan seperti menambahkan fitur star pada Experience. 

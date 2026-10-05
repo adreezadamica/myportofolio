@@ -27,4 +27,6 @@ urlpatterns = [
     ),
 
     path("projects/add-ajax/", create_project_ajax, name="create_project_ajax"),
+    path("experience/add-ajax/", create_experience_ajax, name="create_experience_ajax"),
+    path("experience/<uuid:experience_id>/star/", toggle_star_experience, name="toggle_star_experience"),
 ]

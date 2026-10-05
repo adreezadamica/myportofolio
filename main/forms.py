@@ -9,11 +9,7 @@ from django.utils.html import strip_tags
 class ExperienceForm(ModelForm):
     class Meta:
         model = Experience
-        fields = [
-            "title",
-            "description",
-            "category",
-        ]
+        fields = ["title", "description", "category"]
 
         labels = {
             "title": "Pengalaman Yang Dijalani",
@@ -22,24 +18,23 @@ class ExperienceForm(ModelForm):
         }
 
         widgets = {
-            "title": TextInput(
-                attrs={
-                    "placeholder": "Menjadi Panitia Acara",
-                    "maxlength": 255,
-                }
-            ),
-            "description": Textarea(
-                attrs={
-                    "placeholder": "Ceritakan Peranmu",
-                    "rows": 3,
-                }
-            ),
-            "category": TextInput(
-                attrs={
-                    "placeholder": "Full-Time, Part-Time, Internship, Freelance",
-                }
-            ),
+            "title": TextInput(attrs={"placeholder": "Menjadi Panitia Acara", "maxlength": 255}),
+            "description": Textarea(attrs={"placeholder": "Ceritakan Peranmu", "rows": 3}),
         }
+
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data["title"]).strip()
+        if not title:
+            raise ValidationError("Judul pengalaman tidak boleh hanya berisi tag HTML.")
+        return title
+
+    def clean_description(self):
+        description = strip_tags(self.cleaned_data["description"]).strip()
+        if not description:
+            raise ValidationError("Deskripsi tidak boleh hanya berisi tag HTML.")
+        return description
+
+    
 
 class ProjectsForm(ModelForm):
     class Meta:
