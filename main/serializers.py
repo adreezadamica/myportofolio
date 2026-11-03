@@ -31,7 +31,10 @@ class ProjectSerializer(serializers.ModelSerializer):
         return value
 
     def validate_description(self, value):
-        return strip_tags(value)
+        value = strip_tags(value).strip()
+        if not value:
+            raise serializers.ValidationError("Description cannot be empty.")
+        return value
 
     def get_star_count(self, obj):
         return len(obj.starred_by.all())
