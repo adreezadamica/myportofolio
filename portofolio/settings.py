@@ -160,3 +160,12 @@ CSRF_TRUSTED_ORIGINS = ["https://damica-adreeza-myportofolio.pws.cs.ui.ac.id"]
 
 # Memberitahu Django bahwa request datang via HTTPS dari reverse proxy
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "main.permissions.IsPortfolioOwnerOrReadOnly",
+    ],
+}
